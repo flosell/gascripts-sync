@@ -1,9 +1,13 @@
 
 
 class ScriptProject 
-  def initialize(hash)
-    @data = hash
-    @files = @data["files"].map { |file| ProjectFile.from_hash(file)}
+  def self.from_hash(hash)
+    files = hash["files"].map { |file| ProjectFile.from_hash(file)}
+    ScriptProject.new(files)
+  end
+
+  def initialize(files)
+    @files = files
   end
 
   def id_from_name(filename) 

@@ -11,7 +11,7 @@ describe "ScriptProject" do
        "source"=> "this is test"
     }]}
 
-    @sp = ScriptProject.new(hash)
+    @sp = ScriptProject.from_hash(hash)
   end
 
   it "should find id for file" do 

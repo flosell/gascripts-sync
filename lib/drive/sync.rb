@@ -10,6 +10,9 @@ module Drive
     class Sync 
       def init
         Drive::Sync::Settings.load!
+
+        get_project_id if Drive::Sync::Settings.config["project_id"] == nil
+
       end
       def tear_down
         Drive::Sync::Settings.save!
@@ -31,6 +34,11 @@ module Drive
         command.run 
 
         tear_down
+      end
+
+      def get_project_id
+        $stdout.write  "Enter script project id: "
+        Drive::Sync::Settings.config["project_id"] = gets.chomp
       end
     end
   end

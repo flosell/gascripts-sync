@@ -14,7 +14,7 @@ module Drive
       class PushCommand
         def run
           gdrive = GDrive.connect
-          project = gdrive.get_project_with_id('11RSpoFJJ_cJzlQMhFlZf7JKzh_Qf3_g1K-nIzysRkQ34-rbITXd6a8Gg')
+          project = gdrive.get_project_with_id(Drive::Sync::Settings.config["project_id"])
 
           files = Dir["*.server_js"].map do |filename|
             id = project.id_from_name(filename)
@@ -33,7 +33,7 @@ module Drive
                 :http_method => :PUT,
                 :headers => { "Content-Type" => "application/vnd.google-apps.script+json"},
                 :content_type =>  'application/vnd.google-apps.script+json',
-                :uri => 'https://www.googleapis.com/upload/drive/v2/files/11RSpoFJJ_cJzlQMhFlZf7JKzh_Qf3_g1K-nIzysRkQ34-rbITXd6a8Gg',
+                :uri => 'https://www.googleapis.com/upload/drive/v2/files/'+Drive::Sync::Settings.config["project_id"],
                 :body_object  => new_project.to_hash)
         end
       end

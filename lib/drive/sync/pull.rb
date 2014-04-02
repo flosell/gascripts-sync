@@ -16,7 +16,7 @@ module Drive
         def run
           gdrive = GDrive.connect
 
-          project = gdrive.get_project_with_id('11RSpoFJJ_cJzlQMhFlZf7JKzh_Qf3_g1K-nIzysRkQ34-rbITXd6a8Gg')
+          project = gdrive.get_project_with_id(Drive::Sync::Settings.config["project_id"])
 
           project.files.each do |file| 
             puts "Pulling #{file.filename}"

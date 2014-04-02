@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe "ScriptProject" do 
   before(:each) do 
-    hash={
+    @hash={
     "files" => [{
       "id"=> "efe59460-dc6c-4d85-8b49-561374a48ad9",
        "name"=> "Code",
@@ -11,7 +11,7 @@ describe "ScriptProject" do
        "source"=> "this is test"
     }]}
 
-    @sp = ScriptProject.from_hash(hash)
+    @sp = ScriptProject.from_hash(@hash)
   end
 
   it "should find id for file" do 
@@ -20,5 +20,9 @@ describe "ScriptProject" do
 
   it "should return nil if nothing was found" do 
     @sp.id_from_name("something").should eq  nil
+  end
+
+  it "should convert to hash" do 
+    @sp.to_hash.should eq @hash
   end
 end

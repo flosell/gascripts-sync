@@ -22,4 +22,10 @@ class ScriptProject
   def files 
     @files
   end
+
+  def to_hash
+    {
+      "files" => @files.map { |file| file.to_hash }
+    }
+  end
 end

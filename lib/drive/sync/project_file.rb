@@ -30,4 +30,13 @@ class ProjectFile
   def filename
     "#{@name}.#{@type}"
   end
+
+  def to_hash 
+    {
+      "id" => id,
+      "name" => name,
+      "type" => type,
+      "source" => source
+    }
+  end
 end

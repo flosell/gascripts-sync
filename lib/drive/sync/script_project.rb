@@ -1,3 +1,5 @@
+
+
 class ScriptProject 
   def initialize(hash)
     @data = hash
@@ -11,5 +13,9 @@ class ScriptProject
     else     
       found[0].id
     end
+  end
+
+  def files 
+    @files
   end
 end

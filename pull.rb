@@ -3,6 +3,10 @@ require 'google/api_client'
 require 'launchy'
 require 'net/http'
 
+require_relative "lib/drive/sync/script_project"
+require_relative "lib/drive/sync/project_file"
+
+
 # Get your credentials from the console
 CLIENT_ID = '1044808035117-1e260pacvpkkluic9ef97s19hrs2bakr.apps.googleusercontent.com'
 CLIENT_SECRET = 'eMFOhG6T0_ilzdIWXX8VddNB'
@@ -36,10 +40,10 @@ result = client.execute(
   })
 
 
-project = client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
+project_hash = client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
 
-project["files"].each do |file| 
-  file_name = "#{file['name']}.#{file['type']}"
-  file_source = file['source']
-  File.open(file_name,'w') { |out| out.write(file_source) }
+project = ScriptProject.new(project_hash)
+
+project.files.each do |file| 
+  File.open(file.filename,'w') { |out| out.write(file.source) }
 end

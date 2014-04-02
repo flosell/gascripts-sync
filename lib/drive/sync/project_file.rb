@@ -32,11 +32,9 @@ class ProjectFile
   end
 
   def to_hash 
-    {
-      "id" => id,
-      "name" => name,
-      "type" => type,
-      "source" => source
-    }
+    hash = {}
+    instance_variables.each {|var| val = instance_variable_get(var);hash[var.to_s.delete("@")] = val unless val == :nil}
+
+    hash
   end
 end

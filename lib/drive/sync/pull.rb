@@ -15,18 +15,11 @@ module Drive
         
         def run
           gdrive = GDrive.connect
-          
-          result = gdrive.client.execute(
-            :api_method => gdrive.drive.files.get,
-            :parameters => {
-              'fileId' => '11RSpoFJJ_cJzlQMhFlZf7JKzh_Qf3_g1K-nIzysRkQ34-rbITXd6a8Gg'
-            })
 
-          project_hash = gdrive.client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
-
-          project = ScriptProject.new(project_hash)
+          project = gdrive.get_project_with_id('11RSpoFJJ_cJzlQMhFlZf7JKzh_Qf3_g1K-nIzysRkQ34-rbITXd6a8Gg')
 
           project.files.each do |file| 
+            puts "Pulling #{file.filename}"
             File.open(file.filename,'w') { |out| out.write(file.source) }
           end
         end

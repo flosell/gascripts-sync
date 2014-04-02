@@ -14,22 +14,27 @@ module Drive
       class PushCommand
         def run
           gdrive = GDrive.connect
-          
-          data = {
-            "files" => [
-               "id"=> "efe59460-dc6c-4d85-8b49-561374a48ad9",
-                "name"=> "Code",
-                "type"=> "server_js",
-                "source"=> "/* oh hai this is blubb */" #this needs to be valid Javascript!!!
-            ]
-          }
+          project = gdrive.get_project_with_id('11RSpoFJJ_cJzlQMhFlZf7JKzh_Qf3_g1K-nIzysRkQ34-rbITXd6a8Gg')
+
+          files = Dir["*.server_js"].map do |filename|
+            id = project.id_from_name(filename)
+            name = filename.gsub(/.server_js/, "")
+            type = "server_js"
+            source = File.read(filename)
+
+            puts "Pushing #{filename}"
+
+            ProjectFile.new(id,name,type,source)
+          end
+
+          new_project = ScriptProject.new(files)
 
           result = gdrive.client.execute(
                 :http_method => :PUT,
                 :headers => { "Content-Type" => "application/vnd.google-apps.script+json"},
                 :content_type =>  'application/vnd.google-apps.script+json',
                 :uri => 'https://www.googleapis.com/upload/drive/v2/files/11RSpoFJJ_cJzlQMhFlZf7JKzh_Qf3_g1K-nIzysRkQ34-rbITXd6a8Gg',
-                :body_object  => data)
+                :body_object  => new_project.to_hash)
         end
       end
     end

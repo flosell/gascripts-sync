@@ -35,6 +35,18 @@ module Drive
       def drive
         @drive
       end
+
+      def get_project_with_id(id)
+        result = @client.execute(
+          :api_method => @drive.files.get,
+          :parameters => {
+            'fileId' => id
+          })
+
+        project_hash = @client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
+
+        ScriptProject.from_hash(project_hash)
+      end
     end
   end
 end

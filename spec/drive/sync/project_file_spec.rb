@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe "ProjectFile" do 
   before(:each) do 
-    hash={
+    @hash={
       "id" => "efe59460-dc6c-4d85-8b49-561374a48ad9",
        "name" => "Code",
        "type" => "server_js",
        "source" => "this is test"
     }
 
-    @file_from_hash = ProjectFile.from_hash(hash)
+    @file_from_hash = ProjectFile.from_hash(@hash)
     @file_from_constructor = ProjectFile.new("efe59460-dc6c-4d85-8b49-561374a48ad9","Code","server_js","this is test")
   end
 
@@ -36,5 +36,20 @@ describe "ProjectFile" do
   it "should have a complete filename" do
     @file_from_hash.filename.should eq "Code.server_js"
     @file_from_constructor.filename.should eq "Code.server_js"
+  end
+
+  it "should have a to_hash" do 
+    @file_from_constructor.to_hash.should eq @hash
+  end
+
+  it "to_hash should not include id if it is nil" do 
+    file = ProjectFile.new(:nil,"Code","server_js","this is test")
+
+    expected_hash = {
+      "name" => "Code",
+       "type" => "server_js",
+       "source" => "this is test"
+    }
+    file.to_hash.should eq expected_hash
   end
 end

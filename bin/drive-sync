@@ -13,6 +13,8 @@ sync = Drive::Sync::Sync.new
 
 if (command == "pull")
   sync.pull
+elsif (command == "push")
+  sync.push
 else 
   puts "no valid command #{command}"
 end

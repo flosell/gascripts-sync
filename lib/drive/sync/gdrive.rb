@@ -14,12 +14,24 @@ module Drive
         client.authorization.scope = OAUTH_SCOPE
         client.authorization.redirect_uri = REDIRECT_URI
 
-        uri = client.authorization.authorization_uri
-        Launchy.open(uri)
+        if (Drive::Sync::Settings.config['access_token'] == nil)
+          uri = client.authorization.authorization_uri
+          Launchy.open(uri)
 
-        $stdout.write  "Enter authorization code: "
-        client.authorization.code = gets.chomp
-        client.authorization.fetch_access_token!
+          $stdout.write  "Enter authorization code: "
+          client.authorization.code = gets.chomp
+          client.authorization.fetch_access_token!
+        else 
+          client.authorization.access_token = Drive::Sync::Settings.config['access_token']          
+          client.authorization.refresh_token = Drive::Sync::Settings.config['refresh_token']          
+
+          client.authorization.refresh! if client.authorization.expired?
+
+        end
+
+        Drive::Sync::Settings.config['access_token'] = client.authorization.access_token
+        Drive::Sync::Settings.config['refresh_token'] = client.authorization.refresh_token
+
         GDrive.new(client,drive)
       end
 

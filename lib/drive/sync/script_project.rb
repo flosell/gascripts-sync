@@ -1,14 +1,15 @@
 class ScriptProject 
   def initialize(hash)
     @data = hash
+    @files = @data["files"].map { |file| ProjectFile.new(file)}
   end
 
   def id_from_name(filename) 
-    found = @data["files"].select {|file| "#{file['name']}.#{file['type']}"==filename }
+    found = @files.select {|file| file.filename==filename }
     if (found.empty?)
       nil
     else     
-      found.first['id']
+      found[0].id
     end
   end
 end

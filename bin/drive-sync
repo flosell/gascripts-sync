@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+
+require 'drive/sync'
+
+args = ARGV.dup
+ARGV.clear
+command = args.shift.strip rescue 'help'
+
+sync = Drive::Sync::Sync.new
+
+if (command == "pull")
+  sync.pull
+else 
+  puts "no valid command #{command}"
+end

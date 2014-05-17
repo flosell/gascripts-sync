@@ -3,7 +3,6 @@
 .bundle
 .config
 .yardoc
-Gemfile.lock
 InstalledFiles
 _yardoc
 coverage
@@ -17,4 +16,3 @@ test/version_tmp
 tmp
 .script-project
 *.server_js
-Gemfile.lock

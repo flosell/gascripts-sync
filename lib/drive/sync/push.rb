@@ -35,6 +35,12 @@ module Drive
                 :content_type =>  'application/vnd.google-apps.script+json',
                 :uri => 'https://www.googleapis.com/upload/drive/v2/files/'+Drive::Sync::Settings.config["project_id"],
                 :body_object  => new_project.to_hash)
+          if (result.status != 200) 
+            error_message = result.data["error"]["errors"][0]["message"]
+            puts "ERROR: Google replied with #{error_message}. Do you have syntax errors in your code?"
+          else 
+            puts "Push successful"
+          end
         end
       end
     end

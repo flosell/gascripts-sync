@@ -6,6 +6,8 @@ Overview
 
 This is a small tool that lets you pull Google App Scripts, work on them on your local machine and push them back up into the cloud. 
 
+[![Build Status](https://travis-ci.org/flosell/gascripts-sync.svg?branch=master)](https://travis-ci.org/flosell/gascripts-sync)
+
 Why?
 ----
 

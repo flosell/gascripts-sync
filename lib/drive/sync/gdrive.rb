@@ -6,7 +6,11 @@ module Drive
       OAUTH_SCOPE = ['https://www.googleapis.com/auth/drive','https://www.googleapis.com/auth/drive.scripts']
       REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
       def self.connect 
-        client = Google::APIClient.new
+        client = Google::APIClient.new(
+          :application_name => 'Google Apps Scripts Sync',
+          :application_version => '0.0.1'
+        )
+
         drive = client.discovered_api('drive', 'v2')
 
         client.authorization.client_id = CLIENT_ID
@@ -54,10 +58,17 @@ module Drive
           :parameters => {
             'fileId' => id
           })
+        p result
+        if (result.status == 404)
+          raise "could not find project with id #{id}"
+        elsif (result.status != 200)
+          error_message = result.data["error"]["errors"][0]["message"]
+          raise "could not access project information: server replied with error #{result.status} - #{error_message}"
+        else 
+          project_hash = @client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
 
-        project_hash = @client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
-
-        ScriptProject.from_hash(project_hash)
+          ScriptProject.from_hash(project_hash)
+        end
       end
     end
   end

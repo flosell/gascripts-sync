@@ -30,4 +30,3 @@ The tool is called `drive-sync` and allows you to push and pull from/to google a
 
 * `drive-sync pull` pulls a project from the server. If executed for the first time, it will ask for a project id. The project id is the long combination of letters and digits. It might also ask you to authorize the application in the browser and copy-and paste the authorization-code into the command line. 
 * `drive-sync push` pushes the current state to the server. **WARNING**: The state on the server will be overwritten with your local state. If you accidently overwrite a server-state, Googles revision history can help you.
-

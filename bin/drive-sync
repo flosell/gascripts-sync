@@ -10,11 +10,16 @@ ARGV.clear
 command = args.shift.strip rescue 'help'
 
 sync = Drive::Sync::Sync.new
-
-if (command == "pull")
-  sync.pull
-elsif (command == "push")
-  sync.push
-else 
-  puts "no valid command #{command}"
+begin
+  if (command == "pull")
+    sync.pull
+  elsif (command == "push")
+    sync.push
+  else 
+    puts "no valid command #{command}"
+  end
+  exit 0
+rescue Drive::Sync::SyncError => e
+  puts "ERROR: #{e.message}"
+  exit 1
 end

@@ -7,6 +7,8 @@ require "drive/sync/settings"
 
 module Drive
   module Sync
+    class SyncError < StandardError; end
+
     class Sync 
       def init
         Drive::Sync::Settings.load!

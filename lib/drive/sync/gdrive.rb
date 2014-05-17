@@ -58,12 +58,11 @@ module Drive
           :parameters => {
             'fileId' => id
           })
-        p result
         if (result.status == 404)
-          raise "could not find project with id #{id}"
+          raise SyncError.new( "could not find project with id #{id}")
         elsif (result.status != 200)
           error_message = result.data["error"]["errors"][0]["message"]
-          raise "could not access project information: server replied with error #{result.status} - #{error_message}"
+          raise SyncError.new("could not access project information: server replied with error #{result.status} - #{error_message}")
         else 
           project_hash = @client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
 

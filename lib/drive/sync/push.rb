@@ -37,7 +37,7 @@ module Drive
                 :body_object  => new_project.to_hash)
           if (result.status != 200) 
             error_message = result.data["error"]["errors"][0]["message"]
-            puts "ERROR: Google replied with #{error_message}. Do you have syntax errors in your code?"
+            raise SyncError.new("Google replied with #{error_message}. Do you have syntax errors in your code?")
           else 
             puts "Push successful"
           end

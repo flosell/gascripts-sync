@@ -52,6 +52,18 @@ module Drive
         @drive
       end
 
+
+      def script_project_from_uri(uri) 
+        response = @client.execute(:uri => uri)
+        if (response.status == 302) 
+          script_project_from_uri(response.headers["location"])
+        else
+          project_hash = response.data
+          puts project_hash
+          ScriptProject.from_hash(project_hash)
+        end
+      end
+
       def get_project_with_id(id)
         result = @client.execute(
           :api_method => @drive.files.get,
@@ -64,9 +76,7 @@ module Drive
           error_message = result.data["error"]["errors"][0]["message"]
           raise SyncError.new("could not access project information: server replied with error #{result.status} - #{error_message}")
         else 
-          project_hash = @client.execute(:uri => result.data.export_links["application/vnd.google-apps.script+json"]).data
-
-          ScriptProject.from_hash(project_hash)
+          script_project_from_uri(result.data.export_links["application/vnd.google-apps.script+json"]);
         end
       end
     end
